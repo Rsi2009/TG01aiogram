@@ -12,9 +12,22 @@ import random
 from gtts import gTTS
 import os
 
+import keyboards as kb
+
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
+
+
+@dp.message(CommandStart())
+async def start(message: Message):
+   await message.answer(f'Приветики, {message.from_user.first_name}', reply_markup=kb.main)
+
+
+@dp.message(Command('help'))
+async def help(message: Message):
+    await message.answer('Этот бот умеет выполнять команды:\n/start\n/help\n/weather <город>', reply_markup=kb.inline_keyboard_test)
+
 
 async def get_weather(city: str) -> str:
     # URL для запроса к OpenWeatherMap
@@ -111,13 +124,6 @@ async def react_photo(message: Message):
 async def aitext(message: Message):
     await message.answer('Искусственный интеллект — это свойство искусственных интеллектуальных систем выполнять творческие функции, которые традиционно считаются прерогативой человека; наука и технология создания интеллектуальных машин, особенно интеллектуальных компьютерных программ')
 
-@dp.message(Command('help'))
-async def help(message: Message):
-    await message.answer("Этот бот умеет выполнять команды:\n/start\n/help\n/weather <город>")
-
-@dp.message(CommandStart())
-async def start(message: Message):
-    await message.answer(f"Приветики, {message.from_user. first_name}!")
 
 
 translator = Translator()
